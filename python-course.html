@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python基础课程 - EduLearn</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .python-course {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .course-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .course-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .course-header p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .course-content {
+            margin-bottom: 80px;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            color: var(--text-color);
+        }
+        
+        .section p {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section li {
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+        
+        .code-block {
+            background-color: var(--gray-800);
+            color: var(--white);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+        }
+        
+        .section-icon {
+            font-size: 28px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--gray-200);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        .enroll-section {
+            text-align: center;
+            padding: 60px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: var(--border-radius);
+            margin-top: 60px;
+        }
+        
+        .enroll-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .enroll-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .meta-item {
+            text-align: center;
+        }
+        
+        .meta-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .meta-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">EduLearn</a>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html#courses">课程</a>
+                <a href="index.html#paths">学习路径</a>
+                <a href="index.html#instructors">教师</a>
+                <a href="index.html#testimonials">评价</a>
+                <a href="index.html#faq">常见问题</a>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-outline">登录</button>
+                <button class="btn btn-primary">注册</button>
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 课程标题 -->
+    <section class="python-course">
+        <div class="container">
+            <div class="course-header">
+                <h1>Python基础课程</h1>
+                <p>从零基础开始学习Python编程，掌握核心概念和实用技能</p>
+                
+                <div class="course-meta">
+                    <div class="meta-item">
+                        <span class="meta-value">5</span>
+                        <span class="meta-label">核心章节</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-value">20+</span>
+                        <span class="meta-label">实战练习</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-value">40小时</span>
+                        <span class="meta-label">学习时长</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-value">4.9</span>
+                        <span class="meta-label">学员评分</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 课程内容 -->
+            <div class="course-content">
+                <!-- 1. Python基础语法 -->
+                <div class="section">
+                    <h2><i class="fas fa-code section-icon"></i> Python基础语法</h2>
+                    <p>Python的基础语法是学习Python编程的第一步，包括变量、数据类型、运算符、控制流等基本概念。</p>
+                    
+                    <h3>变量与数据类型</h3>
+                    <p>Python支持多种数据类型，包括：</p>
+                    <ul>
+                        <li>整数 (int)</li>
+                        <li>浮点数 (float)</li>
+                        <li>字符串 (str)</li>
+                        <li>布尔值 (bool)</li>
+                        <li>列表 (list)</li>
+                        <li>元组 (tuple)</li>
+                        <li>字典 (dict)</li>
+                        <li>集合 (set)</li>
+                    </ul>
+                    
+                    <div class="code-block">
+# 变量定义
+name = "Python"
+age = 30
+pi = 3.14159
+is_valid = True
+
+# 字符串操作
+message = "Hello, " + name
+print(message)  # 输出: Hello, Python
+
+# 数字运算
+result = (10 + 5) * 2
+print(result)  # 输出: 30
+                    </div>
+                    
+                    <h3>控制流</h3>
+                    <p>Python的控制流语句包括：</p>
+                    <ul>
+                        <li>if-elif-else 条件语句</li>
+                        <li>for 循环</li>
+                        <li>while 循环</li>
+                        <li>break 和 continue 语句</li>
+                    </ul>
+                    
+                    <div class="code-block">
+# 条件语句
+age = 18
+if age >= 18:
+    print("成年人")
+elif age >= 13:
+    print("青少年")
+else:
+    print("儿童")
+
+# for循环
+for i in range(5):
+    print(i)  # 输出: 0, 1, 2, 3, 4
+
+# while循环
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+                    </div>
+                </div>
+
+                <!-- 2. 数据结构 -->
+                <div class="section">
+                    <h2><i class="fas fa-layer-group section-icon"></i> 数据结构</h2>
+                    <p>Python提供了多种内置数据结构，用于存储和组织数据。</p>
+                    
+                    <h3>列表 (List)</h3>
+                    <p>列表是Python中最常用的数据结构之一，可以存储任意类型的数据。</p>
+                    
+                    <div class="code-block">
+# 列表定义
+numbers = [1, 2, 3, 4, 5]
+fruits = ["apple", "banana", "cherry"]
+
+# 列表操作
+fruits.append("orange")  # 添加元素
+fruits.remove("banana")  # 删除元素
+fruits.sort()  # 排序
+print(fruits)  # 输出: ['apple', 'cherry', 'orange']
+                    </div>
+                    
+                    <h3>字典 (Dictionary)</h3>
+                    <p>字典用于存储键值对，提供快速的查找能力。</p>
+                    
+                    <div class="code-block">
+# 字典定义
+person = {
+    "name": "Alice",
+    "age": 25,
+    "city": "Beijing"
+}
+
+# 字典操作
+print(person["name"])  # 访问值
+person["age"] = 26  # 修改值
+person["email"] = "alice@example.com"  # 添加新键值对
+print(person)  # 输出完整字典
+                    </div>
+                    
+                    <h3>元组 (Tuple) 和 集合 (Set)</h3>
+                    <p>元组是不可变的列表，集合是无序且不包含重复元素的集合。</p>
+                    
+                    <div class="code-block">
+# 元组定义（不可变）
+coordinates = (10, 20)
+
+# 集合定义（无重复元素）
+unique_numbers = {1, 2, 3, 4, 5, 5}  # 自动去重
+print(unique_numbers)  # 输出: {1, 2, 3, 4, 5}
+                    </div>
+                </div>
+
+                <!-- 3. 函数与模块 -->
+                <div class="section">
+                    <h2><i class="fas fa-cogs section-icon"></i> 函数与模块</h2>
+                    <p>函数是组织好的、可重复使用的、用来实现特定功能的代码块。模块是Python程序的组织单位。</p>
+                    
+                    <h3>函数定义与调用</h3>
+                    <div class="code-block">
+# 函数定义
+def greet(name):
+    """问候函数"""
+    return f"Hello, {name}!"
+
+# 函数调用
+message = greet("Bob")
+print(message)  # 输出: Hello, Bob!
+
+# 带默认参数的函数
+def calculate_area(length, width=10):
+    return length * width
+
+print(calculate_area(5))  # 使用默认值，输出: 50
+print(calculate_area(5, 20))  # 覆盖默认值，输出: 100
+                    </div>
+                    
+                    <h3>模块导入与使用</h3>
+                    <p>Python标准库包含了许多有用的模块，可以通过import语句导入。</p>
+                    
+                    <div class="code-block">
+# 导入整个模块
+import math
+print(math.sqrt(16))  # 输出: 4.0
+
+# 导入特定函数
+from random import randint
+print(randint(1, 10))  # 输出1-10之间的随机数
+
+# 导入所有函数
+from datetime import *
+print(date.today())  # 输出今天的日期
+                    </div>
+                    
+                    <h3>创建自定义模块</h3>
+                    <p>可以将相关功能组织到一个文件中，作为自定义模块。</p>
+                </div>
+
+                <!-- 4. 面向对象编程 -->
+                <div class="section">
+                    <h2><i class="fas fa-object-group section-icon"></i> 面向对象编程</h2>
+                    <p>Python是一种面向对象的编程语言，支持类、对象、继承、多态等面向对象特性。</p>
+                    
+                    <h3>类与对象</h3>
+                    <div class="code-block">
+# 类定义
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def greet(self):
+        return f"Hello, my name is {self.name}."
+
+# 创建对象
+person1 = Person("Alice", 25)
+person2 = Person("Bob", 30)
+
+# 访问属性和方法
+print(person1.name)  # 输出: Alice
+print(person1.greet())  # 输出: Hello, my name is Alice.
+                    </div>
+                    
+                    <h3>继承</h3>
+                    <p>继承允许创建一个新类，继承现有类的属性和方法。</p>
+                    
+                    <div class="code-block">
+class Student(Person):
+    def __init__(self, name, age, student_id):
+        super().__init__(name, age)
+        self.student_id = student_id
+    
+    def study(self):
+        return f"{self.name} is studying."
+
+# 创建学生对象
+student = Student("Charlie", 20, "S12345")
+print(student.greet())  # 继承自Person类
+print(student.study())  # 学生类的方法
+                    </div>
+                    
+                    <h3>封装与多态</h3>
+                    <p>封装是指将数据和方法包装在类中，多态是指不同对象对同一方法的不同实现。</p>
+                </div>
+
+                <!-- 5. 文件操作与异常处理 -->
+                <div class="section">
+                    <h2><i class="fas fa-file-code section-icon"></i> 文件操作与异常处理</h2>
+                    <p>文件操作是Python中常见的任务，异常处理可以使程序更加健壮。</p>
+                    
+                    <h3>文件操作</h3>
+                    <div class="code-block">
+# 写入文件
+with open("example.txt", "w") as file:
+    file.write("Hello, Python!")
+    file.write("\nWelcome to file operations.")
+
+# 读取文件
+with open("example.txt", "r") as file:
+    content = file.read()
+    print(content)
+
+# 追加内容
+with open("example.txt", "a") as file:
+    file.write("\nThis is an appended line.")
+                    </div>
+                    
+                    <h3>异常处理</h3>
+                    <p>使用try-except语句来捕获和处理异常。</p>
+                    
+                    <div class="code-block">
+try:
+    # 可能引发异常的代码
+    result = 10 / 0
+except ZeroDivisionError:
+    # 处理特定异常
+    print("除数不能为零!")
+except Exception as e:
+    # 处理其他所有异常
+    print(f"发生错误: {e}")
+else:
+    # 没有异常时执行
+    print("计算成功!")
+finally:
+    # 无论是否有异常都执行
+    print("操作完成.")
+                    </div>
+                    
+                    <h3>上下文管理器</h3>
+                    <p>使用with语句可以自动管理资源，确保文件正确关闭。</p>
+                </div>
+            </div>
+
+            <!-- 报名区域 -->
+            <div class="enroll-section">
+                <h2>开始你的Python学习之旅</h2>
+                <p>立即报名Python基础课程，掌握编程技能，开启你的编程之路</p>
+                <button class="btn btn-primary" style="font-size: 18px; padding: 15px 30px;">立即报名</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>EduLearn</h3>
+                    <p>提供高质量的在线教育课程，帮助你实现学习目标</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>学习资源</h4>
+                    <a href="index.html#courses">课程</a>
+                    <a href="index.html#paths">学习路径</a>
+                    <a href="index.html#instructors">教师</a>
+                    <a href="#">证书</a>
+                </div>
+                <div class="footer-links">
+                    <h4>关于我们</h4>
+                    <a href="#">公司介绍</a>
+                    <a href="#">团队成员</a>
+                    <a href="#">加入我们</a>
+                    <a href="#">联系方式</a>
+                </div>
+                <div class="footer-links">
+                    <h4>帮助中心</h4>
+                    <a href="index.html#faq">常见问题</a>
+                    <a href="#">学习指南</a>
+                    <a href="#">退款政策</a>
+                    <a href="#">隐私政策</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EduLearn. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
