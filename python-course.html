@@ -784,7 +784,12 @@ finally:
             // 配置Skulpt
             Sk.configure({
                 output: function(text) {
-                    outputArea.textContent += text;
+                    // 确保正确追加输出
+                    if (outputArea.textContent === '运行中...') {
+                        outputArea.textContent = text;
+                    } else {
+                        outputArea.textContent += text;
+                    }
                 },
                 read: function(filename) {
                     if (Sk.builtinFiles.files[filename]) {
@@ -802,16 +807,18 @@ finally:
 
             try {
                 outputArea.textContent = '';
-                Sk.misceval.asyncToPromise(() => {
-                    return Sk.importMainWithBody('<stdin>', false, code, true);
-                }).then(() => {
+                // 重置输出区域
+                outputArea.textContent = '运行中...';
+                
+                // 简单的代码执行（不使用asyncToPromise，直接使用Sk.importMain）
+                Sk.importMainWithBody('<stdin>', false, code, false, function(mod) {
                     // 成功
-                    if (outputArea.textContent === '') {
+                    if (outputArea.textContent === '运行中...' || outputArea.textContent === '') {
                         outputArea.textContent = '代码执行成功，无输出';
                     }
                     outputArea.className = 'editor-output success';
-                }).catch(err => {
-                    // 详细错误处理
+                }, function(err) {
+                    // 错误处理
                     let errorMsg = '错误: ';
                     if (err.toString().includes('Skulpt')) {
                         // 提取Skulpt错误的关键信息
