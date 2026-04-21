@@ -283,13 +283,25 @@
         .editor-output {
             background: var(--gray-100);
             color: var(--text-color);
-            padding: 10px;
+            padding: 15px;
             border-radius: 4px;
             border: 1px solid var(--gray-300);
-            min-height: 80px;
+            min-height: 100px;
             font-family: 'Courier New', Courier, monospace;
             white-space: pre-wrap;
             word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.4;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .editor-output.success {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .editor-output.error {
+            border-left: 4px solid #ef4444;
+            color: #ef4444;
         }
 
         .minimized .editor-body {
@@ -767,6 +779,7 @@ finally:
         runBtn.addEventListener('click', () => {
             const code = codeEditor.value;
             outputArea.textContent = '运行中...';
+            outputArea.className = 'editor-output';
             
             // 配置Skulpt
             Sk.configure({
@@ -779,7 +792,12 @@ finally:
                     }
                     throw new Error('File not found: ' + filename);
                 },
-                __future__: Sk.python3
+                __future__: Sk.python3,
+                fatal: function(err) {
+                    outputArea.textContent = '错误: ' + err.toString();
+                    outputArea.className = 'editor-output error';
+                },
+                timeout: 10000 // 10秒超时
             });
 
             try {
@@ -788,11 +806,30 @@ finally:
                     return Sk.importMainWithBody('<stdin>', false, code, true);
                 }).then(() => {
                     // 成功
+                    if (outputArea.textContent === '') {
+                        outputArea.textContent = '代码执行成功，无输出';
+                    }
+                    outputArea.className = 'editor-output success';
                 }).catch(err => {
-                    outputArea.textContent = '错误: ' + err.toString();
+                    // 详细错误处理
+                    let errorMsg = '错误: ';
+                    if (err.toString().includes('Skulpt')) {
+                        // 提取Skulpt错误的关键信息
+                        const match = err.toString().match(/Skulpt: (.*)/);
+                        if (match) {
+                            errorMsg += match[1];
+                        } else {
+                            errorMsg += err.toString();
+                        }
+                    } else {
+                        errorMsg += err.toString();
+                    }
+                    outputArea.textContent = errorMsg;
+                    outputArea.className = 'editor-output error';
                 });
             } catch (err) {
                 outputArea.textContent = '错误: ' + err.toString();
+                outputArea.className = 'editor-output error';
             }
         });
 
