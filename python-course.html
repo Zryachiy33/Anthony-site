@@ -186,7 +186,139 @@
             background-color: var(--primary-color);
             color: var(--white);
         }
+
+        /* 浮动代码编辑器样式 */
+        .floating-editor {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            border: 1px solid var(--gray-300);
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--primary-color);
+            color: var(--white);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            cursor: move;
+        }
+
+        .editor-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .editor-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .editor-controls button {
+            background: transparent;
+            border: 1px solid var(--white);
+            color: var(--white);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .editor-controls button:hover {
+            background: var(--white);
+            color: var(--primary-color);
+        }
+
+        .editor-body {
+            padding: 15px;
+        }
+
+        .editor-textarea {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-900);
+            color: var(--white);
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            resize: vertical;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .editor-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .editor-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .editor-buttons button {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .editor-buttons button:hover {
+            background: #2563eb;
+        }
+
+        .editor-output {
+            background: var(--gray-100);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid var(--gray-300);
+            min-height: 80px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .minimized .editor-body {
+            display: none;
+        }
+
+        .minimized .editor-header {
+            border-radius: var(--border-radius);
+        }
+
+        /* 编辑器示例按钮 */
+        .example-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+            transition: var(--transition);
+        }
+
+        .example-btn:hover {
+            background: #059669;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.3.0/skulpt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.3.0/skulpt-stdlib.min.js"></script>
 </head>
 <body>
     <!-- 导航栏 -->
@@ -561,6 +693,155 @@ finally:
         </div>
     </footer>
 
+    <!-- 浮动代码编辑器 -->
+    <div class="floating-editor" id="floatingEditor">
+        <div class="editor-header" id="editorHeader">
+            <h3><i class="fas fa-code"></i> Python代码编辑器</h3>
+            <div class="editor-controls">
+                <button id="minimizeBtn" title="最小化">_</button>
+                <button id="closeBtn" title="关闭">×</button>
+            </div>
+        </div>
+        <div class="editor-body">
+            <textarea class="editor-textarea" id="codeEditor" placeholder="在这里编写Python代码，然后点击运行按钮..."># 示例代码
+name = "Python"
+print(f"Hello, {name}!")
+
+# 变量演示
+age = 30
+print(f"年龄: {age}")
+
+# 循环演示
+for i in range(5):
+    print(f"循环次数: {i}")</textarea>
+            <div class="editor-buttons">
+                <button id="runBtn">运行代码</button>
+                <button id="clearBtn">清空</button>
+            </div>
+            <div class="editor-output" id="outputArea">运行结果将显示在这里...</div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script>
+        // 编辑器功能实现
+        const editor = document.getElementById('floatingEditor');
+        const header = document.getElementById('editorHeader');
+        const minimizeBtn = document.getElementById('minimizeBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const runBtn = document.getElementById('runBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const codeEditor = document.getElementById('codeEditor');
+        const outputArea = document.getElementById('outputArea');
+
+        // 拖拽功能
+        let isDragging = false;
+        let dragX = 0;
+        let dragY = 0;
+
+        header.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragX = e.clientX - editor.offsetLeft;
+            dragY = e.clientY - editor.offsetTop;
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const newX = e.clientX - dragX;
+            const newY = e.clientY - dragY;
+            editor.style.left = Math.max(0, Math.min(window.innerWidth - editor.offsetWidth, newX)) + 'px';
+            editor.style.top = Math.max(0, Math.min(window.innerHeight - editor.offsetHeight, newY)) + 'px';
+            editor.style.right = 'auto';
+            editor.style.bottom = 'auto';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = 'auto';
+        });
+
+        // 最小化功能
+        minimizeBtn.addEventListener('click', () => {
+            editor.classList.toggle('minimized');
+        });
+
+        // 关闭功能
+        closeBtn.addEventListener('click', () => {
+            if (confirm('确定要关闭代码编辑器吗？')) {
+                editor.style.display = 'none';
+            }
+        });
+
+        // 运行Python代码
+        runBtn.addEventListener('click', () => {
+            const code = codeEditor.value;
+            outputArea.textContent = '运行中...';
+            
+            // 配置Skulpt
+            Sk.configure({
+                output: function(text) {
+                    outputArea.textContent += text;
+                },
+                read: function(filename) {
+                    if (Sk.builtinFiles.files[filename]) {
+                        return Sk.builtinFiles.files[filename];
+                    }
+                    throw new Error('File not found: ' + filename);
+                },
+                __future__: Sk.python3
+            });
+
+            try {
+                outputArea.textContent = '';
+                Sk.misceval.asyncToPromise(() => {
+                    return Sk.importMainWithBody('<stdin>', false, code, true);
+                }).then(() => {
+                    // 成功
+                }).catch(err => {
+                    outputArea.textContent = '错误: ' + err.toString();
+                });
+            } catch (err) {
+                outputArea.textContent = '错误: ' + err.toString();
+            }
+        });
+
+        // 清空编辑器
+        clearBtn.addEventListener('click', () => {
+            if (confirm('确定要清空代码吗？')) {
+                codeEditor.value = '';
+                outputArea.textContent = '运行结果将显示在这里...';
+            }
+        });
+
+        // 为每个代码块添加复制和运行按钮
+        document.querySelectorAll('.code-block').forEach(block => {
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'example-btn';
+            copyBtn.textContent = '复制代码';
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(block.textContent);
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '已复制!';
+                setTimeout(() => copyBtn.textContent = originalText, 1500);
+            };
+
+            const runBtn = document.createElement('button');
+            runBtn.className = 'example-btn';
+            runBtn.textContent = '在编辑器中运行';
+            runBtn.onclick = () => {
+                codeEditor.value = block.textContent;
+                editor.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => document.getElementById('runBtn').click(), 500);
+            };
+
+            block.style.position = 'relative';
+            const btnContainer = document.createElement('div');
+            btnContainer.style.cssText = 'margin-top: 10px; display: flex; gap: 10px;';
+            btnContainer.appendChild(copyBtn);
+            btnContainer.appendChild(runBtn);
+            block.parentNode.insertBefore(btnContainer, block.nextSibling);
+        });
+    </script>
 </body>
 </html>
