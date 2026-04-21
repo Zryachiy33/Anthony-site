@@ -157,6 +157,7 @@ body {
     display: flex;
     gap: 15px;
     margin-bottom: 40px;
+    flex-wrap: wrap;
 }
 
 .hero-stats {
